@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class StickerGenerator {
 
-  void createSticker(InputStream inputStream, String fileName, String subtitle, int startRatingPositioningParameter) throws Exception {
+  void createSticker(InputStream inputStream, String fileName, String subtitle, int startPositioningParameter) throws Exception {
     // leitura da imagem
     // InputStream inputStream = new FileInputStream(new File("assets/inputs/movie.jpg"));
     // InputStream inputStream = new URL("https://m.media-amazon.com/images/M/MV5BMzE5MDM1NDktY2I0OC00YWI5LTk2NzUtYjczNDczOWQxYjM0XkEyXkFqcGdeQXVyMTQxNzMzNDI@.jpg").openStream();
@@ -33,7 +33,7 @@ public class StickerGenerator {
     graphics.setFont(font);
 
     // escrever uma frase na nova imagem
-    graphics.drawString(subtitle, startRatingPositioningParameter, newHeight - 50);
+    graphics.drawString(subtitle, startPositioningParameter, newHeight - 50);
 
     // escrever nova imagem num arquivo
     ImageIO.write(newImage, "png", new File(fileName));

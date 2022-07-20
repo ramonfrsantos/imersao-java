@@ -8,14 +8,14 @@ public class App {
         // fazer conexão HTTP e buscar os dados
 
         // IMDB config
-        String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
-        ContentGetter contentGetter = new ContentGetterIMDB();
+        // String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+        // ContentGetter contentGetter = new ContentGetterIMDB();
 
         // NASA Config
-        // String API_KEY_NASA = "eoJDhVz6fJ6vKzaQHr9hnwGLCXaSUChxRUUbcZKa";
-        // String url = "https://api.nasa.gov/planetary/apod?api_key=" + API_KEY_NASA
-        //         + "&start_date=2022-07-15&end_date=2022-07-18";
-        // ContentGetter contentGetter = new ContentGetterNASA();
+        String API_KEY_NASA = "eoJDhVz6fJ6vKzaQHr9hnwGLCXaSUChxRUUbcZKa";
+        String url = "https://api.nasa.gov/planetary/apod?api_key=" + API_KEY_NASA
+                + "&start_date=2022-07-15&end_date=2022-07-18";
+        ContentGetter contentGetter = new ContentGetterNASA();
 
         var http = new HTTPClient();
         String json = http.getData(url);
@@ -23,10 +23,10 @@ public class App {
         // exibir e manipular os dados
         List<Content> contents = contentGetter.getContents(json);
 
-        var generator = new StickerGenerator();
+        var stickerGenerator = new StickerGenerator();
 
         // criar parametro start para o rating no stickers
-        int startRatingPositioningParameter = 360;
+        int startPositioningParameter = 360;
 
         for (int i = 0; i < 3; i++) {
 
@@ -39,19 +39,23 @@ public class App {
             InputStream inputStream = new URL(imageURL)
                     .openStream();
 
-            // String subtitle = "";
+            String stickerSubtitle = "";
 
-            // double ratingStars = Double.parseDouble(movie.get("imDbRating"));
-            // for (int i = 1; i <= ratingStars; i++) {
-            // subtitle += "\u2B50";
-            // startRatingPositioningParameter -= 30;
-            // }
+            if(content.getRating() != null){
+                for (int j = 1; j <= content.getRating(); j++) {
+                    stickerSubtitle += "\u2B50";
+                    startPositioningParameter -= 30;
+                }
+            } else {
+                startPositioningParameter = 80;
+                stickerSubtitle = content.getTitle();
+            }
 
             System.out.println(title + "\n" + imageURL + "\n\n");
 
-            generator.createSticker(inputStream, fileName, "TOP", startRatingPositioningParameter);
+            stickerGenerator.createSticker(inputStream, fileName, stickerSubtitle, startPositioningParameter);
 
-            // startRatingPositioningParameter = 360;
+            startPositioningParameter = 360;
         }
     }
 }
